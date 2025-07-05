@@ -13,7 +13,7 @@ import type {
 	ResourceMapperFields,
 	ResourceMapperValue,
 } from 'n8n-workflow';
-import { deepCopy, NodeHelpers } from 'n8n-workflow';
+import { NodeHelpers } from 'n8n-workflow';
 import { computed, onMounted, reactive, watch } from 'vue';
 import MappingModeSelect from './MappingModeSelect.vue';
 import MatchingColumnsSelect from './MatchingColumnsSelect.vue';
@@ -537,9 +537,7 @@ function emitValueChanged(): void {
 	pruneParamValues();
 	emit('valueChanged', {
 		name: `${props.path}`,
-		// deepCopy ensures that mutations to state.paramValue that occur in
-		// this component are never visible to the store without explicit event emits
-		value: deepCopy(state.paramValue),
+		value: state.paramValue,
 		node: props.node?.name,
 	});
 	updateNodeIssues();

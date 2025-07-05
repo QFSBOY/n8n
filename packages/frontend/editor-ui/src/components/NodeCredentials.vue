@@ -85,21 +85,31 @@ const filter = ref('');
 const listeningForAuthChange = ref(false);
 const selectRefs = ref<Array<InstanceType<typeof N8nSelect>>>([]);
 
-const credentialTypesNodeDescriptions = computed(() =>
-	credentialsStore.getCredentialTypesNodeDescriptions(props.overrideCredType, nodeType.value),
-);
-
 const credentialTypesNode = computed(() =>
-	credentialTypesNodeDescriptions.value.map(
+	credentialTypesNodeDescription.value.map(
 		(credentialTypeDescription) => credentialTypeDescription.name,
 	),
 );
 
 const credentialTypesNodeDescriptionDisplayed = computed(() =>
-	credentialTypesNodeDescriptions.value
+	credentialTypesNodeDescription.value
 		.filter((credentialTypeDescription) => displayCredentials(credentialTypeDescription))
 		.map((type) => ({ type, options: getCredentialOptions(getAllRelatedCredentialTypes(type)) })),
 );
+const credentialTypesNodeDescription = computed(() => {
+	if (typeof props.overrideCredType !== 'string') return [];
+
+	const credType = credentialsStore.getCredentialTypeByName(props.overrideCredType);
+
+	if (credType) return [credType];
+
+	const activeNodeType = nodeType.value;
+	if (activeNodeType?.credentials) {
+		return activeNodeType.credentials;
+	}
+
+	return [];
+});
 
 const credentialTypeNames = computed(() => {
 	const returnData: Record<string, string> = {};

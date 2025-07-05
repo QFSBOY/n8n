@@ -381,7 +381,7 @@ export function useRunWorkflow(useRunWorkflowOpts: { router: ReturnType<typeof u
 			})();
 
 			try {
-				await displayForm({
+				displayForm({
 					nodes: workflowData.nodes,
 					runData: workflowsStore.getWorkflowExecution?.data?.resultData?.runData,
 					destinationNode: options.destinationNode,

@@ -1,8 +1,5 @@
-import { UserRepository } from '@n8n/db';
 import { Get, Post, RestController } from '@n8n/decorators';
-import { Response } from 'express';
 
-import { AuthService } from '@/auth/auth.service';
 import { BadRequestError } from '@/errors/response-errors/bad-request.error';
 import { ExternalHooks } from '@/external-hooks';
 import { MfaService } from '@/mfa/mfa.service';
@@ -13,8 +10,6 @@ export class MFAController {
 	constructor(
 		private mfaService: MfaService,
 		private externalHooks: ExternalHooks,
-		private authService: AuthService,
-		private userRepository: UserRepository,
 	) {}
 
 	@Post('/can-enable')
@@ -64,7 +59,7 @@ export class MFAController {
 	}
 
 	@Post('/enable', { rateLimit: true })
-	async activateMFA(req: MFA.Activate, res: Response) {
+	async activateMFA(req: MFA.Activate) {
 		const { mfaCode = null } = req.body;
 		const { id, mfaEnabled } = req.user;
 
@@ -86,13 +81,11 @@ export class MFAController {
 		if (!verified)
 			throw new BadRequestError('MFA code expired. Close the modal and enable MFA again', 997);
 
-		const updatedUser = await this.mfaService.enableMfa(id);
-
-		this.authService.issueCookie(res, updatedUser, req.browserId);
+		await this.mfaService.enableMfa(id);
 	}
 
 	@Post('/disable', { rateLimit: true })
-	async disableMFA(req: MFA.Disable, res: Response) {
+	async disableMFA(req: MFA.Disable) {
 		const { id: userId } = req.user;
 
 		const { mfaCode, mfaRecoveryCode } = req.body;
@@ -112,10 +105,6 @@ export class MFAController {
 		} else if (mfaRecoveryCodeDefined) {
 			await this.mfaService.disableMfaWithRecoveryCode(userId, mfaRecoveryCode);
 		}
-
-		const updatedUser = await this.userRepository.findOneByOrFail({ id: userId });
-
-		this.authService.issueCookie(res, updatedUser, req.browserId);
 	}
 
 	@Post('/verify', { rateLimit: true })

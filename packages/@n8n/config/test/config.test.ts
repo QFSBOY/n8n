@@ -25,7 +25,7 @@ describe('GlobalConfig', () => {
 		path: '/',
 		host: 'localhost',
 		port: 5678,
-		listen_address: '::',
+		listen_address: '0.0.0.0',
 		protocol: 'http',
 		auth: {
 			cookie: {
@@ -71,7 +71,6 @@ describe('GlobalConfig', () => {
 			},
 			tablePrefix: '',
 			type: 'sqlite',
-			isLegacySqlite: true,
 		},
 		credentials: {
 			defaultName: 'My credentials',
@@ -196,7 +195,7 @@ describe('GlobalConfig', () => {
 			health: {
 				active: false,
 				port: 5678,
-				address: '::',
+				address: '0.0.0.0',
 			},
 			bull: {
 				redis: {
@@ -272,7 +271,6 @@ describe('GlobalConfig', () => {
 			blockFileAccessToN8nFiles: true,
 			daysAbandonedWorkflow: 90,
 			contentSecurityPolicy: '{}',
-			contentSecurityPolicyReportOnly: false,
 		},
 		executions: {
 			pruneData: true,
@@ -311,10 +309,7 @@ describe('GlobalConfig', () => {
 	it('should use all default values when no env variables are defined', () => {
 		process.env = {};
 		const config = Container.get(GlobalConfig);
-		// Makes sure the objects are structurally equal while respecting getters,
-		// which `toEqual` and `toBe` does not do.
-		expect(defaultConfig).toMatchObject(config);
-		expect(config).toMatchObject(defaultConfig);
+		expect(structuredClone(config)).toEqual(defaultConfig);
 		expect(mockFs.readFileSync).not.toHaveBeenCalled();
 	});
 
@@ -370,7 +365,7 @@ describe('GlobalConfig', () => {
 		mockFs.readFileSync.calledWith(passwordFile, 'utf8').mockReturnValueOnce('password-from-file');
 
 		const config = Container.get(GlobalConfig);
-		const expected = {
+		expect(structuredClone(config)).toEqual({
 			...defaultConfig,
 			database: {
 				...defaultConfig.database,
@@ -379,11 +374,7 @@ describe('GlobalConfig', () => {
 					password: 'password-from-file',
 				},
 			},
-		};
-		// Makes sure the objects are structurally equal while respecting getters,
-		// which `toEqual` and `toBe` does not do.
-		expect(config).toMatchObject(expected);
-		expect(expected).toMatchObject(config);
+		});
 		expect(mockFs.readFileSync).toHaveBeenCalled();
 	});
 

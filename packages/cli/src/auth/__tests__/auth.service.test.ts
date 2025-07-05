@@ -58,35 +58,13 @@ describe('AuthService', () => {
 		it('should generate unique hashes', () => {
 			expect(authService.createJWTHash(user)).toEqual('mJAYx4Wb7k');
 			expect(
-				authService.createJWTHash(
-					mock<User>({ email: user.email, password: 'newPasswordHash', mfaEnabled: false }),
-				),
+				authService.createJWTHash(mock<User>({ email: user.email, password: 'newPasswordHash' })),
 			).toEqual('FVALtU7AE0');
 			expect(
 				authService.createJWTHash(
-					mock<User>({ email: 'test1@example.com', password: user.password, mfaEnabled: false }),
+					mock<User>({ email: 'test1@example.com', password: user.password }),
 				),
 			).toEqual('y8ha6X01jd');
-			expect(
-				authService.createJWTHash(
-					mock<User>({
-						email: user.email,
-						password: user.password,
-						mfaEnabled: true,
-						mfaSecret: 'secret',
-					}),
-				),
-			).toEqual('WUXEVFet9W');
-			expect(
-				authService.createJWTHash(
-					mock<User>({
-						email: user.email,
-						password: 'newPasswordHash',
-						mfaEnabled: true,
-						mfaSecret: 'secret',
-					}),
-				),
-			).toEqual('toYQYKufH6');
 		});
 	});
 
@@ -266,10 +244,6 @@ describe('AuthService', () => {
 			[
 				'user email does not match the one on the token',
 				{ ...userData, email: 'someone@example.com' },
-			],
-			[
-				'user mfa secret does not match the one on the token',
-				{ ...userData, mfaEnabled: true, mfaSecret: '123' },
 			],
 		])('should throw if %s', async (_, data) => {
 			userRepository.findOne.mockResolvedValueOnce(data && mock<User>(data));

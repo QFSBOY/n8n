@@ -3,6 +3,7 @@ import { AnnotationTagMapping } from './annotation-tag-mapping.ee';
 import { ApiKey } from './api-key';
 import { AuthIdentity } from './auth-identity';
 import { AuthProviderSyncHistory } from './auth-provider-sync-history';
+import { AuthUser } from './auth-user';
 import { CredentialsEntity } from './credentials-entity';
 import { EventDestinations } from './event-destinations';
 import { ExecutionAnnotation } from './execution-annotation.ee';
@@ -22,6 +23,8 @@ import { SharedCredentials } from './shared-credentials';
 import { SharedWorkflow } from './shared-workflow';
 import { TagEntity } from './tag-entity';
 import { TestCaseExecution } from './test-case-execution.ee';
+import { TestDefinition } from './test-definition.ee';
+import { TestMetric } from './test-metric.ee';
 import { TestRun } from './test-run.ee';
 import { User } from './user';
 import { Variables } from './variables';
@@ -55,12 +58,15 @@ export {
 	WorkflowTagMapping,
 	FolderTagMapping,
 	AuthProviderSyncHistory,
+	AuthUser,
 	WorkflowHistory,
 	ExecutionData,
 	ExecutionMetadata,
 	AnnotationTagEntity,
 	ExecutionAnnotation,
 	AnnotationTagMapping,
+	TestDefinition,
+	TestMetric,
 	TestRun,
 	TestCaseExecution,
 	ExecutionEntity,
@@ -90,12 +96,15 @@ export const entities = {
 	WorkflowTagMapping,
 	FolderTagMapping,
 	AuthProviderSyncHistory,
+	AuthUser,
 	WorkflowHistory,
 	ExecutionData,
 	ExecutionMetadata,
 	AnnotationTagEntity,
 	ExecutionAnnotation,
 	AnnotationTagMapping,
+	TestDefinition,
+	TestMetric,
 	TestRun,
 	TestCaseExecution,
 	ExecutionEntity,

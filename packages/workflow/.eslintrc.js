@@ -10,7 +10,6 @@ module.exports = {
 
 	rules: {
 		complexity: 'error',
-		'unicorn/filename-case': ['error', { case: 'kebabCase' }],
 
 		// TODO: remove these
 		'@typescript-eslint/no-base-to-string': 'warn',

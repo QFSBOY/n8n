@@ -6,10 +6,10 @@ import {
 	MANUAL_CHAT_TRIGGER_LANGCHAIN_NODE_TYPE,
 	NODES_WITH_RENAMABLE_CONTENT,
 	STARTING_NODE_TYPES,
-} from './constants';
+} from './Constants';
 import { ApplicationError } from './errors/application.error';
-import { Expression } from './expression';
-import { getGlobalState } from './global-state';
+import { Expression } from './Expression';
+import { getGlobalState } from './GlobalState';
 import type {
 	IConnections,
 	INode,
@@ -28,11 +28,11 @@ import type {
 	NodeParameterValueType,
 	INodeOutputConfiguration,
 	NodeConnectionType,
-} from './interfaces';
-import { NodeConnectionTypes } from './interfaces';
-import * as NodeHelpers from './node-helpers';
-import { applyAccessPatterns } from './node-reference-parser-utils';
-import * as ObservableObject from './observable-object';
+} from './Interfaces';
+import { NodeConnectionTypes } from './Interfaces';
+import * as NodeHelpers from './NodeHelpers';
+import { applyAccessPatterns } from './NodeReferenceParserUtils';
+import * as ObservableObject from './ObservableObject';
 
 function dedupe<T>(arr: T[]): T[] {
 	return [...new Set(arr)];

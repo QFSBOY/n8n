@@ -1,6 +1,5 @@
 import { ExecutionRepository } from '@n8n/db';
 import { Container } from '@n8n/di';
-import { DateTime } from 'luxon';
 
 import { createExecution } from '@test-integration/db/executions';
 import { createWorkflow } from '@test-integration/db/workflows';
@@ -24,30 +23,12 @@ describe('UserRepository', () => {
 	});
 
 	describe('findManyByRangeQuery', () => {
-		test('sort by `createdAt` if `startedAt` is null', async () => {
-			const now = DateTime.utc();
+		// eslint-disable-next-line n8n-local-rules/no-skipped-tests
+		test.skip('sort by `createdAt` if `startedAt` is null', async () => {
 			const workflow = await createWorkflow();
-			const execution1 = await createExecution(
-				{
-					createdAt: now.plus({ minute: 1 }).toJSDate(),
-					startedAt: now.plus({ minute: 1 }).toJSDate(),
-				},
-				workflow,
-			);
-			const execution2 = await createExecution(
-				{
-					createdAt: now.plus({ minute: 2 }).toJSDate(),
-					startedAt: null,
-				},
-				workflow,
-			);
-			const execution3 = await createExecution(
-				{
-					createdAt: now.plus({ minute: 3 }).toJSDate(),
-					startedAt: now.plus({ minute: 3 }).toJSDate(),
-				},
-				workflow,
-			);
+			const execution1 = await createExecution({}, workflow);
+			const execution2 = await createExecution({ startedAt: null }, workflow);
+			const execution3 = await createExecution({}, workflow);
 
 			const executions = await executionRepository.findManyByRangeQuery({
 				workflowId: workflow.id,

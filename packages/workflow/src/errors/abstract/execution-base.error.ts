@@ -1,4 +1,4 @@
-import type { Functionality, IDataObject, JsonObject } from '../../interfaces';
+import type { Functionality, IDataObject, JsonObject } from '../../Interfaces';
 import { ApplicationError } from '../application.error';
 import type { ReportingOptions } from '../error.types';
 

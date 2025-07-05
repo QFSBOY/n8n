@@ -12,18 +12,18 @@ import type { Readable } from 'stream';
 import type { SecureContextOptions } from 'tls';
 import type { URLSearchParams } from 'url';
 
-import type { CODE_EXECUTION_MODES, CODE_LANGUAGES, LOG_LEVELS } from './constants';
-import type { IDeferredPromise } from './deferred-promise';
+import type { CODE_EXECUTION_MODES, CODE_LANGUAGES, LOG_LEVELS } from './Constants';
+import type { IDeferredPromise } from './DeferredPromise';
 import type { ExecutionCancelledError } from './errors';
 import type { ExpressionError } from './errors/expression.error';
 import type { NodeApiError } from './errors/node-api.error';
 import type { NodeOperationError } from './errors/node-operation.error';
 import type { WorkflowActivationError } from './errors/workflow-activation.error';
 import type { WorkflowOperationError } from './errors/workflow-operation.error';
-import type { ExecutionStatus } from './execution-status';
+import type { ExecutionStatus } from './ExecutionStatus';
 import type { Result } from './result';
-import type { Workflow } from './workflow';
-import type { EnvProviderState } from './workflow-data-proxy-env-provider';
+import type { Workflow } from './Workflow';
+import type { EnvProviderState } from './WorkflowDataProxyEnvProvider';
 
 export interface IAdditionalCredentialOptions {
 	oauth2?: IOAuth2Options;
@@ -1444,11 +1444,6 @@ export interface INodePropertyModeTypeOptions {
 	searchListMethod?: string; // Supported by: options
 	searchFilterRequired?: boolean;
 	searchable?: boolean;
-	allowNewResource?: {
-		label: string;
-		defaultName: string;
-		method: string;
-	};
 }
 
 export interface INodePropertyMode {

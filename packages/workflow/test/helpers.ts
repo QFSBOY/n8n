@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 
-import type { INodeTypes } from '@/interfaces';
+import type { INodeTypes } from '@/Interfaces';
 
-import { NodeTypes as NodeTypesClass } from './node-types';
+import { NodeTypes as NodeTypesClass } from './NodeTypes';
 
 let nodeTypesInstance: NodeTypesClass | undefined;
 

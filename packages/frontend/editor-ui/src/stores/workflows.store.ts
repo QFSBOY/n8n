@@ -1290,12 +1290,12 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 		return false;
 	}
 
-	function setNodeIssue(nodeIssueData: INodeIssueData): void {
+	function setNodeIssue(nodeIssueData: INodeIssueData): boolean {
 		const nodeIndex = workflow.value.nodes.findIndex((node) => {
 			return node.name === nodeIssueData.node;
 		});
 		if (nodeIndex === -1) {
-			return;
+			return false;
 		}
 
 		const node = workflow.value.nodes[nodeIndex];
@@ -1304,7 +1304,7 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 			// Remove the value if one exists
 			if (node.issues?.[nodeIssueData.type] === undefined) {
 				// No values for type exist so nothing has to get removed
-				return;
+				return true;
 			}
 
 			const { [nodeIssueData.type]: removedNodeIssue, ...remainingNodeIssues } = node.issues;
@@ -1319,6 +1319,7 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 				},
 			});
 		}
+		return true;
 	}
 
 	function addNode(nodeData: INodeUi): void {
@@ -1389,14 +1390,12 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 
 		if (nodeIndex !== -1) {
 			for (const key of Object.keys(updateInformation.properties)) {
+				uiStore.stateIsDirty = true;
+
 				const typedKey = key as keyof INodeUpdatePropertiesInformation['properties'];
 				const property = updateInformation.properties[typedKey];
 
-				const changed = updateNodeAtIndex(nodeIndex, { [key]: property });
-
-				if (changed) {
-					uiStore.stateIsDirty = true;
-				}
+				updateNodeAtIndex(nodeIndex, { [key]: property });
 			}
 		}
 	}
@@ -1421,7 +1420,7 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 
 		const excludeKeys = ['position', 'notes', 'notesInFlow'];
 
-		if (changed && !excludeKeys.includes(updateInformation.key)) {
+		if (!excludeKeys.includes(updateInformation.key)) {
 			nodeMetadata.value[workflow.value.nodes[nodeIndex].name].parametersLastUpdatedAt = Date.now();
 		}
 	}
@@ -1440,19 +1439,17 @@ export const useWorkflowsStore = defineStore(STORES.WORKFLOWS, () => {
 
 		const node = workflow.value.nodes[nodeIndex];
 
+		uiStore.stateIsDirty = true;
 		const newParameters =
 			!!append && isObject(updateInformation.value)
 				? { ...node.parameters, ...updateInformation.value }
 				: updateInformation.value;
 
-		const changed = updateNodeAtIndex(nodeIndex, {
+		updateNodeAtIndex(nodeIndex, {
 			parameters: newParameters as INodeParameters,
 		});
 
-		if (changed) {
-			uiStore.stateIsDirty = true;
-			nodeMetadata.value[node.name].parametersLastUpdatedAt = Date.now();
-		}
+		nodeMetadata.value[node.name].parametersLastUpdatedAt = Date.now();
 	}
 
 	function setLastNodeParameters(updateInformation: IUpdateInformation): void {

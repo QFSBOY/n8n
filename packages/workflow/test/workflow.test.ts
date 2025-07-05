@@ -1,9 +1,9 @@
 import { mock } from 'jest-mock-extended';
 
-import { NodeConnectionTypes } from '@/interfaces';
+import { NodeConnectionTypes } from '@/Interfaces';
+import type { IConnection } from '@/Interfaces';
 import type {
 	IBinaryKeyData,
-	IConnection,
 	IConnections,
 	IDataObject,
 	INode,
@@ -11,12 +11,12 @@ import type {
 	INodeParameters,
 	IRunExecutionData,
 	NodeParameterValueType,
-} from '@/interfaces';
-import { Workflow } from '@/workflow';
+} from '@/Interfaces';
+import { Workflow } from '@/Workflow';
 
 process.env.TEST_VARIABLE_1 = 'valueEnvVariable1';
 
-import * as Helpers from './helpers';
+import * as Helpers from './Helpers';
 
 interface StubNode {
 	name: string;

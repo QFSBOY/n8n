@@ -12,10 +12,6 @@ defineSlots<{
 	displayItem: (props: Item) => unknown;
 }>();
 
-const emit = defineEmits<{
-	removeItem: [name: string];
-}>();
-
 type SelectableListProps = {
 	inputs: Item[];
 	disabled?: boolean;
@@ -54,7 +50,6 @@ function addToSelectedItems(name: string) {
 
 function removeFromSelectedItems(name: string) {
 	delete selectedItems.value[name];
-	emit('removeItem', name);
 }
 
 function itemComparator(a: Item, b: Item) {

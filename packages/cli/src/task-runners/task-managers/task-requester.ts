@@ -54,6 +54,8 @@ export abstract class TaskRequester {
 
 	taskAcceptRejects: Map<string, { accept: TaskAccept; reject: TaskReject }> = new Map();
 
+	pendingRequests: Map<string, TaskRequest> = new Map();
+
 	tasks: Map<string, Task> = new Map();
 
 	private readonly dataResponseBuilder = new DataRequestResponseBuilder();
@@ -107,6 +109,8 @@ export abstract class TaskRequester {
 			settings,
 			data,
 		};
+
+		this.pendingRequests.set(request.requestId, request);
 
 		const taskIdPromise = new Promise<string>((resolve, reject) => {
 			this.requestAcceptRejects.set(request.requestId, {

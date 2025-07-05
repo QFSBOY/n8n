@@ -227,7 +227,7 @@ export class Telegram implements INodeType {
 						name: 'Edit Message Text',
 						value: 'editMessageText',
 						description: 'Edit a text message',
-						action: 'Edit a text message',
+						action: 'Edit a test message',
 					},
 					{
 						name: 'Pin Chat Message',
@@ -2195,11 +2195,7 @@ export class Telegram implements INodeType {
 				returnData.push(...executionData);
 			} catch (error) {
 				if (this.continueOnFail()) {
-					const executionErrorData = this.helpers.constructExecutionMetaData(
-						this.helpers.returnJsonArray({ error: error.description ?? error.message }),
-						{ itemData: { item: i } },
-					);
-					returnData.push(...executionErrorData);
+					returnData.push({ json: {}, error: error.message });
 					continue;
 				}
 				throw error;

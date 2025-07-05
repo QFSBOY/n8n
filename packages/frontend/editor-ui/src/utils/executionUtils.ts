@@ -103,7 +103,7 @@ export const openFormPopupWindow = (url: string) => {
 
 export const clearPopupWindowState = () => (formPopupWindow = false);
 
-export async function displayForm({
+export function displayForm({
 	nodes,
 	runData,
 	pinData,
@@ -137,14 +137,6 @@ export async function displayForm({
 		if (node.name === destinationNode || !node.disabled) {
 			let testUrl = '';
 			if (node.type === FORM_TRIGGER_NODE_TYPE) testUrl = getTestUrl(node);
-
-			try {
-				const res = await fetch(testUrl, { method: 'GET' });
-				if (!res.ok) continue;
-			} catch (error) {
-				continue;
-			}
-
 			if (testUrl && source !== 'RunData.ManualChatMessage') {
 				clearPopupWindowState();
 				openFormPopupWindow(testUrl);
@@ -165,7 +157,7 @@ export const waitingNodeTooltip = (node: INodeUi | null | undefined) => {
 		}
 		if (resume) {
 			if (!['webhook', 'form'].includes(resume as string)) {
-				return i18n.baseText('ndv.output.waitNodeWaiting.description.timer');
+				return i18n.baseText('ndv.output.waitNodeWaiting');
 			}
 
 			const { webhookSuffix } = (node.parameters.options ?? {}) as { webhookSuffix: string };
@@ -176,12 +168,12 @@ export const waitingNodeTooltip = (node: INodeUi | null | undefined) => {
 
 			if (resume === 'form') {
 				resumeUrl = `${useRootStore().formWaitingUrl}/${useWorkflowsStore().activeExecutionId}${suffix}`;
-				message = i18n.baseText('ndv.output.waitNodeWaiting.description.form');
+				message = i18n.baseText('ndv.output.waitNodeWaitingForFormSubmission');
 			}
 
 			if (resume === 'webhook') {
 				resumeUrl = `${useRootStore().webhookWaitingUrl}/${useWorkflowsStore().activeExecutionId}${suffix}`;
-				message = i18n.baseText('ndv.output.waitNodeWaiting.description.webhook');
+				message = i18n.baseText('ndv.output.waitNodeWaitingForWebhook');
 			}
 
 			if (message && resumeUrl) {
@@ -190,7 +182,7 @@ export const waitingNodeTooltip = (node: INodeUi | null | undefined) => {
 		}
 
 		if (node?.type === FORM_NODE_TYPE) {
-			const message = i18n.baseText('ndv.output.waitNodeWaiting.description.form');
+			const message = i18n.baseText('ndv.output.waitNodeWaitingForFormSubmission');
 			const resumeUrl = `${useRootStore().formWaitingUrl}/${useWorkflowsStore().activeExecutionId}`;
 			return `${message}<a href="${resumeUrl}" target="_blank">${resumeUrl}</a>`;
 		}

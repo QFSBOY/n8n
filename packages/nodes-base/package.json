@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-base",
-  "version": "1.94.0",
+  "version": "1.93.1",
   "description": "Base nodes of n8n",
   "main": "index.js",
   "scripts": {
@@ -279,7 +279,6 @@
       "dist/credentials/PagerDutyOAuth2Api.credentials.js",
       "dist/credentials/PayPalApi.credentials.js",
       "dist/credentials/PeekalinkApi.credentials.js",
-      "dist/credentials/PerplexityApi.credentials.js",
       "dist/credentials/PhantombusterApi.credentials.js",
       "dist/credentials/PhilipsHueOAuth2Api.credentials.js",
       "dist/credentials/PipedriveApi.credentials.js",
@@ -515,6 +514,7 @@
       "dist/nodes/ExecuteWorkflow/ExecuteWorkflow/ExecuteWorkflow.node.js",
       "dist/nodes/ExecuteWorkflow/ExecuteWorkflowTrigger/ExecuteWorkflowTrigger.node.js",
       "dist/nodes/ExecutionData/ExecutionData.node.js",
+      "dist/nodes/EvaluationMetrics/EvaluationMetrics.node.js",
       "dist/nodes/Facebook/FacebookGraphApi.node.js",
       "dist/nodes/Facebook/FacebookTrigger.node.js",
       "dist/nodes/FacebookLeadAds/FacebookLeadAdsTrigger.node.js",
@@ -703,7 +703,6 @@
       "dist/nodes/PayPal/PayPal.node.js",
       "dist/nodes/PayPal/PayPalTrigger.node.js",
       "dist/nodes/Peekalink/Peekalink.node.js",
-      "dist/nodes/Perplexity/Perplexity.node.js",
       "dist/nodes/Phantombuster/Phantombuster.node.js",
       "dist/nodes/PhilipsHue/PhilipsHue.node.js",
       "dist/nodes/Pipedrive/Pipedrive.node.js",

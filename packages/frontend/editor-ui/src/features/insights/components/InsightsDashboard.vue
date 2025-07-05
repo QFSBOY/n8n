@@ -4,11 +4,10 @@ import { useTelemetry } from '@/composables/useTelemetry';
 import InsightsSummary from '@/features/insights/components/InsightsSummary.vue';
 import { useInsightsStore } from '@/features/insights/insights.store';
 import type { InsightsDateRange, InsightsSummaryType } from '@n8n/api-types';
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { TELEMETRY_TIME_RANGE, UNLICENSED_TIME_RANGE } from '../insights.constants';
 import InsightsDateRangeSelect from './InsightsDateRangeSelect.vue';
 import InsightsUpgradeModal from './InsightsUpgradeModal.vue';
-import { useDocumentTitle } from '@/composables/useDocumentTitle';
 
 const InsightsPaywall = defineAsyncComponent(
 	async () => await import('@/features/insights/components/InsightsPaywall.vue'),
@@ -117,10 +116,6 @@ watch(
 		immediate: true,
 	},
 );
-
-onMounted(() => {
-	useDocumentTitle().set(i18n.baseText('insights.heading'));
-});
 </script>
 
 <template>

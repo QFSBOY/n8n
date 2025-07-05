@@ -1,9 +1,5 @@
-export const configuredOutputs = (
-	version: number,
-	parameters: { enableResponseOutput?: boolean },
-) => {
-	const multipleOutputs = version === 1.3 || (version >= 1.4 && parameters.enableResponseOutput);
-	if (multipleOutputs) {
+export const configuredOutputs = (version: number) => {
+	if (version >= 1.3) {
 		return [
 			{
 				type: 'main',

@@ -1,6 +1,7 @@
 import { AuthIdentity } from '@n8n/db';
 import { type User } from '@n8n/db';
 import { AuthIdentityRepository } from '@n8n/db';
+import { AuthUserRepository } from '@n8n/db';
 import { UserRepository } from '@n8n/db';
 import { Container } from '@n8n/di';
 import type { ApiKeyScope, GlobalRole } from '@n8n/permissions';
@@ -72,13 +73,10 @@ export async function createUserWithMfaEnabled(
 		email,
 	});
 
-	await Container.get(UserRepository).update(user.id, {
+	await Container.get(AuthUserRepository).update(user.id, {
 		mfaSecret: encryptedSecret,
 		mfaRecoveryCodes: encryptedRecoveryCodes,
 	});
-
-	user.mfaSecret = encryptedSecret;
-	user.mfaRecoveryCodes = encryptedRecoveryCodes;
 
 	return {
 		user,

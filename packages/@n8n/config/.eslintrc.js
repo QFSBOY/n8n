@@ -8,10 +8,6 @@ module.exports = {
 
 	...sharedOptions(__dirname),
 
-	rules: {
-		'unicorn/filename-case': ['error', { case: 'kebabCase' }],
-	},
-
 	overrides: [
 		{
 			files: ['**/*.config.ts'],

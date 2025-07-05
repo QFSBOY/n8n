@@ -13,7 +13,7 @@ describe('UserService', () => {
 		host: 'localhost',
 		path: '/',
 		port: 5678,
-		listen_address: '::',
+		listen_address: '0.0.0.0',
 		protocol: 'http',
 	});
 	const urlService = new UrlService(globalConfig);
@@ -38,7 +38,7 @@ describe('UserService', () => {
 			});
 
 			type MaybeSensitiveProperties = Partial<
-				Pick<User, 'password' | 'updatedAt' | 'authIdentities' | 'mfaSecret' | 'mfaRecoveryCodes'>
+				Pick<User, 'password' | 'updatedAt' | 'authIdentities'>
 			>;
 
 			// to prevent typechecking from blocking assertions
@@ -47,8 +47,6 @@ describe('UserService', () => {
 			expect(publicUser.password).toBeUndefined();
 			expect(publicUser.updatedAt).toBeUndefined();
 			expect(publicUser.authIdentities).toBeUndefined();
-			expect(publicUser.mfaSecret).toBeUndefined();
-			expect(publicUser.mfaRecoveryCodes).toBeUndefined();
 		});
 
 		it('should add scopes if requested', async () => {
@@ -80,7 +78,7 @@ describe('UserService', () => {
 
 	describe('update', () => {
 		// We need to use `save` so that that the subscriber in
-		// packages/@n8n/db/src/entities/Project.ts receives the full user.
+		// packages/cli/src/databases/entities/Project.ts receives the full user.
 		// With `update` it would only receive the updated fields, e.g. the `id`
 		// would be missing.
 		it('should use `save` instead of `update`', async () => {

@@ -207,12 +207,13 @@ export class WaitingWebhooks implements IWebhookManager {
 		const runExecutionData = execution.data;
 
 		return await new Promise((resolve, reject) => {
+			const executionMode = 'webhook';
 			void WebhookHelpers.executeWebhook(
 				workflow,
 				webhookData,
 				workflowData,
 				workflowStartNode,
-				execution.mode,
+				executionMode,
 				runExecutionData.pushRef,
 				runExecutionData,
 				execution.id,

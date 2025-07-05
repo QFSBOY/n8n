@@ -3,36 +3,26 @@ import LogsViewConsumedTokenCountText from '@/components/CanvasChat/future/compo
 import { useI18n } from '@/composables/useI18n';
 import { type LlmTokenUsageData } from '@/Interface';
 import { N8nText } from '@n8n/design-system';
-import { useTimestamp } from '@vueuse/core';
 import { upperFirst } from 'lodash-es';
 import { type ExecutionStatus } from 'n8n-workflow';
 import { computed } from 'vue';
 
-const { status, consumedTokens, startTime, timeTook } = defineProps<{
+const { status, consumedTokens, timeTook } = defineProps<{
 	status: ExecutionStatus;
 	consumedTokens: LlmTokenUsageData;
-	startTime: number;
 	timeTook?: number;
 }>();
 
 const locale = useI18n();
-const now = useTimestamp({ interval: 1000 });
 const executionStatusText = computed(() =>
-	status === 'running' || status === 'waiting'
-		? locale.baseText('logs.overview.body.summaryText.for', {
+	timeTook === undefined
+		? upperFirst(status)
+		: locale.baseText('logs.overview.body.summaryText', {
 				interpolate: {
 					status: upperFirst(status),
-					time: locale.displayTimer(Math.floor((now.value - startTime) / 1000) * 1000, true),
+					time: locale.displayTimer(timeTook, true),
 				},
-			})
-		: timeTook === undefined
-			? upperFirst(status)
-			: locale.baseText('logs.overview.body.summaryText.in', {
-					interpolate: {
-						status: upperFirst(status),
-						time: locale.displayTimer(timeTook, true),
-					},
-				}),
+			}),
 );
 </script>
 

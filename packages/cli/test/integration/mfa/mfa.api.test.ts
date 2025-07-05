@@ -1,4 +1,5 @@
-import { UserRepository, type User } from '@n8n/db';
+import type { User } from '@n8n/db';
+import { AuthUserRepository } from '@n8n/db';
 import { Container } from '@n8n/di';
 import { randomString } from 'n8n-workflow';
 
@@ -129,7 +130,7 @@ describe('Enable MFA setup', () => {
 			await testServer.authAgentFor(owner).post('/mfa/verify').send({ mfaCode }).expect(200);
 			await testServer.authAgentFor(owner).post('/mfa/enable').send({ mfaCode }).expect(200);
 
-			const user = await Container.get(UserRepository).findOneOrFail({
+			const user = await Container.get(AuthUserRepository).findOneOrFail({
 				where: {},
 			});
 
@@ -152,7 +153,7 @@ describe('Enable MFA setup', () => {
 
 			await testServer.authAgentFor(owner).post('/mfa/enable').send({ mfaCode }).expect(400);
 
-			const user = await Container.get(UserRepository).findOneOrFail({
+			const user = await Container.get(AuthUserRepository).findOneOrFail({
 				where: {},
 			});
 
@@ -174,7 +175,7 @@ describe('Disable MFA setup', () => {
 			})
 			.expect(200);
 
-		const dbUser = await Container.get(UserRepository).findOneOrFail({
+		const dbUser = await Container.get(AuthUserRepository).findOneOrFail({
 			where: { id: user.id },
 		});
 
@@ -395,7 +396,7 @@ describe('Login', () => {
 			const data = response.body.data;
 			expect(data.mfaEnabled).toBe(true);
 
-			const dbUser = await Container.get(UserRepository).findOneOrFail({
+			const dbUser = await Container.get(AuthUserRepository).findOneOrFail({
 				where: { id: user.id },
 			});
 

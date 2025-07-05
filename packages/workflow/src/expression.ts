@@ -3,12 +3,12 @@ import { DateTime, Duration, Interval } from 'luxon';
 import { ApplicationError } from './errors/application.error';
 import { ExpressionExtensionError } from './errors/expression-extension.error';
 import { ExpressionError } from './errors/expression.error';
-import { evaluateExpression, setErrorHandler } from './expression-evaluator-proxy';
-import { sanitizer, sanitizerName } from './expression-sandboxing';
-import { extend, extendOptional } from './extensions';
-import { extendSyntax } from './extensions/expression-extension';
-import { extendedFunctions } from './extensions/extended-functions';
-import { getGlobalState } from './global-state';
+import { evaluateExpression, setErrorHandler } from './ExpressionEvaluatorProxy';
+import { sanitizer, sanitizerName } from './ExpressionSandboxing';
+import { extend, extendOptional } from './Extensions';
+import { extendSyntax } from './Extensions/ExpressionExtension';
+import { extendedFunctions } from './Extensions/ExtendedFunctions';
+import { getGlobalState } from './GlobalState';
 import type {
 	IDataObject,
 	IExecuteData,
@@ -22,9 +22,9 @@ import type {
 	NodeParameterValue,
 	NodeParameterValueType,
 	WorkflowExecuteMode,
-} from './interfaces';
-import type { Workflow } from './workflow';
-import { WorkflowDataProxy } from './workflow-data-proxy';
+} from './Interfaces';
+import type { Workflow } from './Workflow';
+import { WorkflowDataProxy } from './WorkflowDataProxy';
 
 const IS_FRONTEND_IN_DEV_MODE =
 	typeof process === 'object' &&

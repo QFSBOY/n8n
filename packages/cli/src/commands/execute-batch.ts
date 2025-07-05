@@ -28,13 +28,6 @@ import type {
 
 const re = /\d+/;
 
-interface ISkipList {
-	workflowId: string;
-	status: string;
-	skipReason: string;
-	ticketReference: string;
-}
-
 export class ExecuteBatch extends BaseCommand {
 	static description = '\nExecutes multiple workflows once';
 
@@ -60,7 +53,7 @@ export class ExecuteBatch extends BaseCommand {
 
 	static examples = [
 		'$ n8n executeBatch',
-		'$ n8n executeBatch --concurrency=10 --skipList=/data/skipList.json',
+		'$ n8n executeBatch --concurrency=10 --skipList=/data/skipList.txt',
 		'$ n8n executeBatch --debug --output=/data/output.json',
 		'$ n8n executeBatch --ids=10,13,15 --shortOutput',
 		'$ n8n executeBatch --snapshot=/data/snapshots --shallow',
@@ -252,15 +245,12 @@ export class ExecuteBatch extends BaseCommand {
 		if (flags.skipList !== undefined) {
 			if (fs.existsSync(flags.skipList)) {
 				const contents = fs.readFileSync(flags.skipList, { encoding: 'utf-8' });
-				try {
-					const parsedSkipList = JSON.parse(contents) as ISkipList[];
-					parsedSkipList.forEach((item) => {
-						skipIds.push(item.workflowId);
-					});
-				} catch (error) {
-					this.logger.error('Skip list file is not a valid JSON. Exiting.');
-					return;
-				}
+				skipIds.push(
+					...contents
+						.trimEnd()
+						.split(',')
+						.filter((id) => re.exec(id)),
+				);
 			} else {
 				this.logger.error('Skip list file not found. Exiting.');
 				return;

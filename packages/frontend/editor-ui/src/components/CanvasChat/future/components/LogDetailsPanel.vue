@@ -88,7 +88,6 @@ function handleResizeEnd() {
 						:class="$style.executionSummary"
 						:status="logEntry.runData.executionStatus ?? 'unknown'"
 						:consumed-tokens="consumedTokens"
-						:start-time="logEntry.runData.startTime"
 						:time-took="logEntry.runData.executionTime"
 					/>
 				</div>

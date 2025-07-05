@@ -163,7 +163,6 @@ watch(
 					:class="$style.summary"
 					:status="execution.status"
 					:consumed-tokens="consumedTokens"
-					:start-time="+new Date(execution.startedAt)"
 					:time-took="
 						execution.startedAt && execution.stoppedAt
 							? +new Date(execution.stoppedAt) - +new Date(execution.startedAt)
@@ -247,8 +246,6 @@ watch(
 
 .tree {
 	padding: 0 var(--spacing-2xs) var(--spacing-2xs) var(--spacing-2xs);
-
-	scroll-padding-block: var(--spacing-3xs);
 
 	& :global(.el-icon) {
 		display: none;

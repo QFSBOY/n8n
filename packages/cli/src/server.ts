@@ -58,6 +58,7 @@ import '@/events/events.controller';
 import '@/executions/executions.controller';
 import '@/external-secrets.ee/external-secrets.controller.ee';
 import '@/license/license.controller';
+import '@/evaluation.ee/test-definitions.controller.ee';
 import '@/evaluation.ee/test-runs.controller.ee';
 import '@/workflows/workflow-history.ee/workflow-history.controller.ee';
 import '@/workflows/workflows.controller';
@@ -354,13 +355,11 @@ export class Server extends AbstractServer {
 					errorMessage: 'The contentSecurityPolicy is not valid JSON.',
 				},
 			);
-			const cspReportOnly = Container.get(SecurityConfig).contentSecurityPolicyReportOnly;
 			const securityHeadersMiddleware = helmet({
 				contentSecurityPolicy: isEmpty(cspDirectives)
 					? false
 					: {
 							useDefaults: false,
-							reportOnly: cspReportOnly,
 							directives: {
 								...cspDirectives,
 							},

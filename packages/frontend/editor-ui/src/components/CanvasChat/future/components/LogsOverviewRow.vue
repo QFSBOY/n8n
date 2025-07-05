@@ -13,7 +13,6 @@ import {
 	type LatestNodeInfo,
 	type LogEntry,
 } from '@/components/RunDataAi/utils';
-import { useTimestamp } from '@vueuse/core';
 
 const props = defineProps<{
 	data: LogEntry;
@@ -35,13 +34,12 @@ const emit = defineEmits<{
 
 const container = useTemplateRef('containerRef');
 const locale = useI18n();
-const now = useTimestamp({ interval: 1000 });
 const nodeTypeStore = useNodeTypesStore();
 const type = computed(() => nodeTypeStore.getNodeType(props.data.node.type));
 const isSettled = computed(
 	() =>
 		props.data.runData.executionStatus &&
-		!['running', 'waiting'].includes(props.data.runData.executionStatus),
+		['crashed', 'error', 'success'].includes(props.data.runData.executionStatus),
 );
 const isError = computed(() => !!props.data.runData.error);
 const startedAtText = computed(() => {
@@ -53,15 +51,6 @@ const startedAtText = computed(() => {
 		},
 	});
 });
-const statusText = computed(() => upperFirst(props.data.runData.executionStatus));
-const timeText = computed(() =>
-	locale.displayTimer(
-		isSettled.value
-			? props.data.runData.executionTime
-			: Math.floor((now.value - props.data.runData.startTime) / 1000) * 1000,
-		true,
-	),
-);
 
 const subtreeConsumedTokens = computed(() =>
 	props.shouldShowTokenCountColumn ? getSubtreeTotalConsumedTokens(props.data, false) : undefined,
@@ -137,24 +126,19 @@ watch(
 			:is-deleted="latestInfo?.deleted ?? false"
 		/>
 		<N8nText v-if="!isCompact" tag="div" color="text-light" size="small" :class="$style.timeTook">
-			<I18nT v-if="isSettled" keypath="logs.overview.body.summaryText.in">
+			<I18nT v-if="isSettled" keypath="logs.overview.body.summaryText">
 				<template #status>
 					<N8nText v-if="isError" color="danger" :bold="true" size="small">
-						<N8nIcon icon="exclamation-triangle" :class="$style.errorIcon" />
-						{{ statusText }}
+						<N8nIcon icon="exclamation-triangle" :class="$style.errorIcon" />{{
+							upperFirst(props.data.runData.executionStatus)
+						}}
 					</N8nText>
-					<template v-else>{{ statusText }}</template>
+					<template v-else>{{ upperFirst(props.data.runData.executionStatus) }}</template>
 				</template>
-				<template #time>{{ timeText }}</template>
+				<template #time>{{ locale.displayTimer(props.data.runData.executionTime, true) }}</template>
 			</I18nT>
-			<template v-else>
-				{{
-					locale.baseText('logs.overview.body.summaryText.for', {
-						interpolate: { status: statusText, time: timeText },
-					})
-				}}
-			</template>
-		</N8nText>
+			<template v-else>{{ upperFirst(props.data.runData.executionStatus) }}</template></N8nText
+		>
 		<N8nText
 			v-if="!isCompact"
 			tag="div"
